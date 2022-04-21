@@ -36,7 +36,7 @@ we're using the rule we discussed with QA engineers not semantic versioning.
 `minor` - sprint number  
 `fetch` - count of deployments  
 
-you can see all versions we deployed in package.json or [git tags](https://github.com/riiid/monorepo-portal/tags)
+you can see all versions we deployed in package.json or [git tags](https://github.com/ddalpange/monorepo-template/tags)
 if you want set new version, run this command
 it will update [CHANGELOG.md](./CHANGELOG.md) and commit on your current branch with tag.
 

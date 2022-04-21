@@ -2,8 +2,8 @@
 
 import {$, fs, globby, path} from 'zx';
 
-const jira = 'https://riiid-pioneer.atlassian.net';
-const github = 'https://github.com/riiid/monorepo-portal';
+const jira = '';
+const github = 'https://github.com/ddalpange/monorepo-template';
 const tagFormat = 'v{version}';
 const logFile = './CHANGELOG.md'
 const rootPackageFile = './package.json';
