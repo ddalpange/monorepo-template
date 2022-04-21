@@ -1,0 +1,27 @@
+{
+  "npm.packageManager": "yarn",
+  "javascript.preferences.importModuleSpecifier": "non-relative",
+  "editor.defaultFormatter": "vscode.typescript-language-features",
+  "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": true,
+  },
+  "eslint.packageManager": "yarn",
+  "eslint.validate": [
+      "javascript",
+      "javascriptreact",
+      "typescript",
+      "typescriptreact"
+  ],
+  "search.exclude": {
+    "**/.yarn": true,
+    "**/.pnp.*": true
+  },
+  "typescript.enablePromptUseWorkspaceTsdk": true,
+  "typescript.tsdk": ".yarn/sdks/typescript/lib",
+  "eslint.workingDirectories": [
+		"./packages/core",
+		"./packages/icons",
+		"./packages/token",
+		"./apps/portal"
+	],
+}

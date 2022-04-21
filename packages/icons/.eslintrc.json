@@ -1,0 +1,10 @@
+{
+  "extends": ["@riiid/eslint-config"],
+  "ignorePatterns": [
+    "**/lib/*",
+    "**/generated/**"
+  ],
+  "rules": {
+    "no-restricted-imports": [0]
+  }
+}
