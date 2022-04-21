@@ -13,7 +13,7 @@ export const ButtonBase = styled.button<ButtonBaseStyleProps>`
   border: 0;
   background: none;
   cursor: pointer;
-
+  font-weight: bold;
   :disabled {
     cursor: not-allowed;
   }
