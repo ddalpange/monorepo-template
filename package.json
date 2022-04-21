@@ -3,7 +3,7 @@
   "description": "Mono repository",
   "private": true,
   "packageManager": "yarn@3.1.0",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "scripts": {
     "dev": "ultra -r yarn dev",
     "lint": "ultra -r yarn lint",
