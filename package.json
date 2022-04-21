@@ -1,0 +1,39 @@
+{
+  "name": "monorepo",
+  "description": "Mono repository",
+  "private": true,
+  "packageManager": "yarn@3.1.0",
+  "version": "0.0.0",
+  "scripts": {
+    "dev": "ultra -r yarn dev",
+    "lint": "ultra -r yarn lint",
+    "test": "ultra -r yarn test",
+    "build": "ultra -r yarn build",
+    "clean": "ultra -r yarn clean",
+    "clean:node_modules": "find . -name 'node_modules' -type d -prune -exec rm -rf '{}' +",
+    "storybook": "ultra -r yarn storybook",
+    "build:packages": "ultra -r --filter 'packages/*' yarn build",
+    "pr": "gh pr create -a @me",
+    "prepare": "husky install",
+    "versioning": "yarn zx ./versioning.mjs"
+  },
+  "workspaces": [
+    "packages/token",
+    "packages/icons",
+    "packages/core",
+    "apps/portal"
+  ],
+  "resolutions": {
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-query": "^3.34.16"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^16.2.3",
+    "@commitlint/config-conventional": "^16.2.1",
+    "husky": "^7.0.4",
+    "typescript": "^4.4.3",
+    "ultra-runner": "^3.10.5",
+    "zx": "^6.0.7"
+  }
+}

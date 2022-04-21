@@ -1,0 +1,46 @@
+{
+  "name": "@monorepo/icons",
+  "packageManager": "yarn@3.0.2",
+  "version": "0.17.0",
+  "description": "monorepo design system svg icons",
+  "author": "Yohan Kim <ddalpange@gmail.com>",
+  "license": "(MIT OR Apache-2.0)",
+  "types": "./src/index.ts",
+  "main": "./lib/index.js",
+  "module": "./lib/esm/index.js",
+  "scripts": {
+    "entrypoint": "rm -rf ./src/generated && sucrase-node ./src/cli/entrypoint.ts",
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "clean": "rm -rf ./lib",
+    "lint": "tsc --project tsconfig.json --noEmit && eslint src --ext .ts,.tsx",
+    "lint:fix": "yarn lint --fix"
+  },
+  "devDependencies": {
+    "@riiid/eslint-config": "^2.0.0-beta",
+    "@svgr/babel-preset": "^6.2.0",
+    "@svgr/core": "^6.2.1",
+    "@types/node": "^16.11.6",
+    "@types/react": "^17.0.33",
+    "@types/react-dom": "^17.0.10",
+    "@types/svgo": "^2.6.2",
+    "axios": "^0.26.1",
+    "eslint": "^7.32.0",
+    "fast-glob": "^3.2.11",
+    "figma-js": "^1.15.0",
+    "prettier": "^2.4.1",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "sucrase": "^3.20.3",
+    "tsup": "^5.11.11",
+    "typescript": "^4.4.4"
+  },
+  "peerDependencies": {
+    "react": ">= 17",
+    "react-dom": ">= 17"
+  },
+  "files": [
+    "src",
+    "lib"
+  ]
+}

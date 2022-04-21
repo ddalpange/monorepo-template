@@ -1,0 +1,28 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+set +e
+
+COMMIT_MSG_FILE=$1
+COMMIT_MSG=$(cat $1)
+
+echo "$COMMIT_MSG" | yarn commitlint --verbose
+
+# exit script if commitlint was failed
+if [ $? -eq 1 ]; then
+  echo "🚨 commit was failed with error. (Use --no-verify to skip)"
+  exit 1
+fi
+
+BRANCH_NAME=$(git rev-parse --abbrev-ref HEAD)
+
+JIRA_TICKET=$(echo "$BRANCH_NAME" | grep -Eo "[A-Z0-9]{1,10}-?[A-Z0-9]+-\d+")
+
+MSG_FIRST=$(echo "$COMMIT_MSG" | grep -Eo "^(feat|build|perf|docs|chore|ci|style|refactor|test)(\([a-zA-Z]+\))?!?: ")
+
+MSG_LAST=$(echo "$COMMIT_MSG" | sed "s/$MSG_FIRST//")  
+
+if [ -n "$JIRA_TICKET" ]; then
+  echo "$MSG_FIRST[$JIRA_TICKET] $MSG_LAST" > $COMMIT_MSG_FILE
+  echo "🔗 '[$JIRA_TICKET]' prepended to commit message. (Use --no-verify to skip)"
+fi

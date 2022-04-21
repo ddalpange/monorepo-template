@@ -1,0 +1,175 @@
+name: "🚀 Deploy Dev"
+on:
+  push:
+    branches: ["main"]
+    paths: ["apps/portal/**", "packages/**"]
+
+jobs:
+  deploy-monorepo-portal:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: ["16.x"]
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Setup Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Get Cache Variables
+        id: cache-variables
+        run: |
+          echo "::set-output name=YARN_CACHE_DIR::$(yarn config get cacheFolder)"
+          echo "::set-output name=PKG_LATEST_GIT_COMMIT::$(git log -1 --format=format:'%H' packages)"
+      - name: Caching Node Module and Yarn Cache
+        uses: actions/cache@v2
+        id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
+        with:
+          path: |
+            ${{ steps.cache-variables.outputs.YARN_CACHE_DIR }}
+            **/node_modules
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+      - name: Install NPM Packages
+        if: steps.yarn-cache.outputs.cache-hit != 'true'
+        run: yarn install
+      - name: Caching Monorepo Package Outputs
+        uses: actions/cache@v2
+        id: lib-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
+        with:
+          path: |
+            **/packages/**/lib
+          key: ${{ runner.os }}-lib-${{ steps.cache-variables.outputs.PKG_LATEST_GIT_COMMIT }}
+          restore-keys: |
+            ${{ runner.os }}-lib-
+      - name: Build Monorepo Packages
+        if: steps.lib-cache.outputs.cache-hit != 'true'
+        run: |
+          yarn build:packages
+      - name: Deploy app to vercel
+        uses: amondnet/vercel-action@v20
+        with:
+          scope: riiid
+          vercel-args: "--prod"
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          vercel-project-id: "prj_Y4Z4Yp8wtvLRrTiqPo7gJpCxfQas"
+          vercel-org-id: "team_G8O6ANYcfOCGKvk9UP2GTA5k"
+          # Root Directory and check `Include source files outside of the Root Directory in the Build Step.`
+          # working-directory: ./apps/portal
+  deploy-monorepo-portal-storybook:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: ["16.x"]
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Setup Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Get Cache Variables
+        id: cache-variables
+        run: |
+          echo "::set-output name=YARN_CACHE_DIR::$(yarn config get cacheFolder)"
+          echo "::set-output name=PKG_LATEST_GIT_COMMIT::$(git log -1 --format=format:'%H' packages)"
+      - name: Caching Node Module and Yarn Cache
+        uses: actions/cache@v2
+        id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
+        with:
+          path: |
+            ${{ steps.cache-variables.outputs.YARN_CACHE_DIR }}
+            **/node_modules
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+      - name: Install NPM Packages
+        if: steps.yarn-cache.outputs.cache-hit != 'true'
+        run: yarn install
+      - name: Caching Monorepo Package Outputs
+        uses: actions/cache@v2
+        id: lib-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
+        with:
+          path: |
+            **/packages/**/lib
+          key: ${{ runner.os }}-lib-${{ steps.cache-variables.outputs.PKG_LATEST_GIT_COMMIT }}
+          restore-keys: |
+            ${{ runner.os }}-lib-
+      - name: Build Monorepo Packages
+        if: steps.lib-cache.outputs.cache-hit != 'true'
+        run: |
+          yarn build:packages
+      - name: Deploy portal storybook to vercel
+        uses: amondnet/vercel-action@v20
+        with:
+          scope: riiid
+          vercel-args: "--prod"
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          vercel-project-id: "prj_mpBTm077a6gxKSflCAl7xFFDZtjP"
+          vercel-org-id: "team_G8O6ANYcfOCGKvk9UP2GTA5k"
+          # Root Directory and check `Include source files outside of the Root Directory in the Build Step.`
+          # working-directory: ./apps/portal
+  deploy-monorepo-dsl-storybook:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: ["16.x"]
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Setup Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Get Cache Variables
+        id: cache-variables
+        run: |
+          echo "::set-output name=YARN_CACHE_DIR::$(yarn config get cacheFolder)"
+          echo "::set-output name=PKG_LATEST_GIT_COMMIT::$(git log -1 --format=format:'%H' packages)"
+      - name: Caching Node Module and Yarn Cache
+        uses: actions/cache@v2
+        id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
+        with:
+          path: |
+            ${{ steps.cache-variables.outputs.YARN_CACHE_DIR }}
+            **/node_modules
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+      - name: Install NPM Packages
+        if: steps.yarn-cache.outputs.cache-hit != 'true'
+        run: yarn install
+      - name: Caching Monorepo Package Outputs
+        uses: actions/cache@v2
+        id: lib-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
+        with:
+          path: |
+            **/packages/**/lib
+          key: ${{ runner.os }}-lib-${{ steps.cache-variables.outputs.PKG_LATEST_GIT_COMMIT }}
+          restore-keys: |
+            ${{ runner.os }}-lib-
+      - name: Build Monorepo Packages
+        if: steps.lib-cache.outputs.cache-hit != 'true'
+        run: |
+          yarn build:packages
+      - name: Deploy dsl storybook to vercel
+        uses: amondnet/vercel-action@v20
+        with:
+          scope: riiid
+          vercel-args: "--prod"
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          vercel-project-id: "prj_6grR7wg5y4sD9jAjLd3apW8qXMJQ"
+          vercel-org-id: "team_G8O6ANYcfOCGKvk9UP2GTA5k"
+          # Root Directory and check `Include source files outside of the Root Directory in the Build Step.`
+          # working-directory: ./apps/portal

@@ -1,0 +1,18 @@
+{
+  "jsc": {
+    "parser": {
+      "syntax": "typescript",
+      "tsx": true
+    },
+    "transform": {
+      "react": {
+        "runtime": "automatic",
+        "refresh": true,
+        "importSource": "@emotion/react"
+      }
+    }
+  },
+  "module": {
+    "type": "commonjs"
+  }
+} 
